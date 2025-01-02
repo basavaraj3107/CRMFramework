@@ -22,19 +22,21 @@ public class WebDriverUtility {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 	}
 
-	public void waitForElementPresent(WebDriver driver, WebElement element) {
+	public WebDriverWait webDriverWait(WebDriver driver) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		wait.until(ExpectedConditions.visibilityOf(element));
+		return wait;
+	}
+
+	public void waitForElementPresent(WebDriver driver, WebElement element) {
+		webDriverWait(driver).until(ExpectedConditions.visibilityOf(element));
 	}
 
 	public void waitForElementClickable(WebDriver driver, WebElement element) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		wait.until(ExpectedConditions.elementToBeClickable(element));
+		webDriverWait(driver).until(ExpectedConditions.elementToBeClickable(element));
 	}
 
 	public void waitTillElementInvisible(WebDriver driver, WebElement element) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		wait.until(ExpectedConditions.invisibilityOf(element));
+		webDriverWait(driver).until(ExpectedConditions.invisibilityOf(element));
 	}
 
 	public void switchToTabOnURL(WebDriver driver, String partialUrl) {
@@ -188,6 +190,14 @@ public class WebDriverUtility {
 		javaScriptExecutorActions(driver).executeScript("window.scrollTo(0," + scrollValue + ")");
 	}
 
+	public void clickOnElementByUsingJS(WebDriver driver, WebElement element) {
+		javaScriptExecutorActions(driver).executeScript("arguments[0].click();", element);
+	}
+	
+	public void enterInputToElementUsingJS(WebDriver driver, WebElement element, Object value) {
+		javaScriptExecutorActions(driver).executeScript("arguments[0].value = arguments[1];", element, value);
+	}
+	
 	public boolean verifyTextOfElementEqualsExpectedText(WebElement element, String expectedText) {
 		String actText = element.getText();
 		if (actText.equalsIgnoreCase(expectedText)) {
@@ -196,7 +206,7 @@ public class WebDriverUtility {
 			return false;
 		}
 	}
-	
+
 	public boolean verifyTextOfElementContainsExpectedText(WebElement element, String expectedText) {
 		String actText = element.getText();
 		if (actText.contains(expectedText)) {
