@@ -10,5 +10,6 @@ public class Test2 {
 		ExcelUtility eLib = new ExcelUtility();
 		String data = eLib.getDataFromExcelFile("org", "TC001", "orgNumber");
 		System.out.println(data);
+		System.out.println(data);
 	}
 }
